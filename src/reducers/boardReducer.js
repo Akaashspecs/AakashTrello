@@ -33,23 +33,6 @@ const board = (state = initialState, action) => {
         ...state,
         lists: newList,
       };
-    case types.DUPLICATE_LIST:
-      const listToDuplicate = state.lists[action.data];
-      return {
-        ...state,
-        lists: [
-          ...state.lists.slice(0, action.data),
-          {
-            ...listToDuplicate,
-            id: randomId(),
-            cards: listToDuplicate.cards.map((card) => ({
-              ...card,
-              id: randomId(),
-            })),
-          },
-          ...state.lists.slice(action.data),
-        ],
-      };
 
     case types.ADD_CARD:
       return {
@@ -66,43 +49,6 @@ const board = (state = initialState, action) => {
                 id: randomId(),
                 content: action.data.cardContent,
               },
-            ],
-          };
-        }),
-      };
-
-    case types.REMOVE_CARD:
-      return {
-        ...state,
-        lists: state.lists.map((list, listIndex) => {
-          if (listIndex !== action.data.listIndex) {
-            return list;
-          }
-          const newCards = [...list.cards];
-          newCards.splice(action.data.cardIndex, 1);
-          return {
-            ...list,
-            cards: newCards,
-          };
-        }),
-      };
-    case types.DUPLICATE_CARD:
-      return {
-        ...state,
-        lists: state.lists.map((list, listIndex) => {
-          if (listIndex !== action.data.listIndex) {
-            return list;
-          }
-          const cardToDuplicate = list.cards[action.data.cardIndex];
-          return {
-            ...list,
-            cards: [
-              ...list.cards.slice(0, action.data.cardIndex),
-              {
-                ...cardToDuplicate,
-                id: randomId(),
-              },
-              ...list.cards.slice(action.data.cardIndex),
             ],
           };
         }),
